@@ -1,0 +1,28 @@
+server:
+  port: 3000
+  servlet:
+    contextPath: /simple-application
+
+spring:
+  application:
+    name: simple-application
+  cloud:
+    config:
+      enabled: true
+      discovery:
+        enabled: true
+        serviceId: SIMPLE-CONFIG-SERVER
+      fail-fast: false
+  profiles:
+    active: dev
+
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/simple-eureka/eureka
+  instance:
+    preferIpAddress: true
+    statusPageUrlPath: ${server.servlet.contextPath}/actuator/info
