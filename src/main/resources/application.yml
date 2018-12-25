@@ -2,3 +2,6 @@ server:
   port: 3000
   servlet:
     contextPath: /simple-application
+
+hello:
+  word: fake

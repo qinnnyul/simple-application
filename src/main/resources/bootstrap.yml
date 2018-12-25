@@ -4,18 +4,20 @@ server:
     contextPath: /simple-application
 
 spring:
+  profiles:
+    active: local
   application:
     name: simple-application
+
+
+---
+
+spring:
+  profiles: local
   cloud:
     config:
       enabled: true
-      discovery:
-        enabled: true
-        serviceId: SIMPLE-CONFIG-SERVER
-      fail-fast: false
-  profiles:
-    active: dev
-
+      uri: http://localhost:8888/simple-config-server
 
 eureka:
   client:
@@ -26,3 +28,30 @@ eureka:
   instance:
     preferIpAddress: true
     statusPageUrlPath: ${server.servlet.contextPath}/actuator/info
+    metadataMap:
+      configPath: ${server.servlet.contextPath}
+
+---
+
+spring:
+  profiles: aws
+  cloud:
+    config:
+      enabled: true
+      discovery:
+        enabled: true
+        serviceId: SIMPLE-CONFIG-SERVER
+      fail-fast: false
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://simple-cluster-alb-2055402269.ap-southeast-1.elb.amazonaws.com/simple-eureka/eureka
+  instance:
+    preferIpAddress: true
+    statusPageUrlPath: ${server.servlet.contextPath}/actuator/info
+    metadataMap:
+      configPath: ${server.servlet.contextPath}
+
